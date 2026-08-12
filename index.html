@@ -304,6 +304,8 @@ async function loadData(){
   if(!ws) throw new Error('Sheet "' + SHEET_NAME + '" not found. Tabs present: ' + wb.SheetNames.join(', '));
   const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, defval:''});
   DATA = rowsToData(rows);
+  // normalised department string used by the filter matcher (deptMatch)
+  DATA.forEach(d=>{ d._dn = d.deptRaw.toLowerCase().replace(/venune/g,'venue').replace(/merchendize/g,'merchandise'); });
   return res.headers.get('Last-Modified');
 }
 const STATUS_COLORS = {
